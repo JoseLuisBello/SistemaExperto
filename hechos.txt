@@ -1,4 +1,3 @@
-usuario_hizo_clic_en_link_sospechoso
-pagina_pide_credenciales
-sistema_lento
-ventanas_emergentes
+P
+Q
+J
