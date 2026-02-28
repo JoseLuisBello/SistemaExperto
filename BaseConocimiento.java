@@ -49,12 +49,11 @@ class BaseConocimiento {
             while ((linea = br.readLine()) != null) {
                 numLinea++;
                 linea = linea.trim();
-                if (linea.isEmpty() || linea.startsWith("#") || linea.startsWith("//"))
-                    continue;
+                if (linea.isEmpty() || linea.startsWith("#") || linea.startsWith("//")) continue;
 
                 String[] partes = linea.split("=>|ENTONCES|->", 2);
                 if (partes.length != 2) {
-                    System.out.println("Línea ignorada (formato inválido) #" + numLinea + ": " + linea);
+                    System.out.println("Línea ignorada #" + numLinea + ": " + linea);
                     continue;
                 }
 
@@ -63,28 +62,21 @@ class BaseConocimiento {
 
                 List<Condicion> antecedentes = parsearAntecedentes(textoAntecedentes);
 
-                if (antecedentes.isEmpty() && consecuente.isEmpty()) {
-                    System.out.println("Regla vacía ignorada en línea #" + numLinea);
-                    continue;
-                }
-
                 numeroRegla++;
-                Regla nuevaRegla = new Regla(antecedentes, consecuente, numeroRegla);
-                agregarRegla(nuevaRegla);
+                Regla regla = new Regla(antecedentes, consecuente, numeroRegla);
+                agregarRegla(regla);
             }
         }
     }
 
-    private List<Condicion> parsearAntecedentes(String texto) {
+    public List<Condicion> parsearAntecedentes(String texto) {
         List<Condicion> lista = new ArrayList<>();
-
         texto = texto.replaceAll("\\s*&\\s*", " & ");
-
         String[] tokens = texto.split("\\s*&\\s*");
+
         for (String token : tokens) {
             token = token.trim();
-            if (token.isEmpty())
-                continue;
+            if (token.isEmpty()) continue;
 
             boolean negada = false;
             if (token.startsWith("!")) {
@@ -111,15 +103,23 @@ class BaseConocimiento {
         }
     }
 
-    public void imprimirEstadoInicial() {
-        System.out.println("\nHechos (" + hechos.size() + "):");
-        for (String h : hechos) {
-            System.out.println("  " + h);
+    public void imprimirEstado() {
+        System.out.println("\nHechos actuales (" + hechos.size() + "):");
+        if (hechos.isEmpty()) {
+            System.out.println("  (ninguno)");
+        } else {
+            for (String h : hechos) {
+                System.out.println("  • " + h);
+            }
         }
 
-        System.out.println("\nReglas (" + reglas.size() + "):");
-        for (Regla r : reglas) {
-            System.out.println("  " + r.toStringConNumero());
+        System.out.println("\nReglas cargadas (" + reglas.size() + "):");
+        if (reglas.isEmpty()) {
+            System.out.println("  (ninguna)");
+        } else {
+            for (Regla r : reglas) {
+                System.out.println("  " + r.toStringConNumero());
+            }
         }
         System.out.println();
     }

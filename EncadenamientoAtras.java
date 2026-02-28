@@ -14,24 +14,23 @@ class EncadenamientoAtras {
         objetivo = objetivo.trim();
 
         if (bc.contieneHecho(objetivo)) {
-            out.println(objetivo + ", ya esta en los hechos");
+            out.println(objetivo + " → Hecho ya conocido");
             return true;
         }
 
         if (pila.contains(objetivo)) {
-            out.println(" (REGRESION) Ciclo detectado (SE) asumimos falso: " + objetivo);
+            out.println(" (REGRESIÓN) Ciclo detectado → asumimos falso: " + objetivo);
             return false;
         }
 
         pila.add(objetivo);
-        out.println("META actualizada a: " + objetivo);
+        out.println("META actual: " + objetivo);
 
         boolean probado = false;
         List<Regla> reglasCopia = bc.obtenerReglas();
 
         for (Regla regla : reglasCopia) {
-            if (!regla.getConsecuente().equals(objetivo))
-                continue;
+            if (!regla.getConsecuente().equals(objetivo)) continue;
 
             out.println(" Probamos " + regla.toStringConNumero());
 
@@ -55,18 +54,18 @@ class EncadenamientoAtras {
             if (todosCumplen) {
                 bc.agregarHecho(objetivo);
                 out.println(" Disparamos la regla:\n\t" + regla.toStringConNumero());
-                out.println(" y agregamos: " + objetivo + " a los hechos");
+                out.println(" → agregado: " + objetivo);
                 probado = true;
                 break;
             }
         }
 
         if (!probado) {
-            out.printf("  ¿Es cierto \"%s\"? (s/n): ", objetivo);
+            out.printf(" ¿Es cierto \"%s\"? (s/n): ", objetivo);
             String resp = scanner.nextLine().trim().toLowerCase();
             if (resp.equals("s") || resp.equals("si") || resp.equals("y")) {
                 bc.agregarHecho(objetivo);
-                out.println("  Aceptado por el usuario.");
+                out.println(" Aceptado por el usuario.");
                 probado = true;
             }
         }

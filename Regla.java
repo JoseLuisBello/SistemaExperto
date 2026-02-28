@@ -7,24 +7,23 @@ class Regla {
 
     public Regla(List<Condicion> antecedentes, String consecuente, int numero) {
         this.antecedentes = new ArrayList<>(antecedentes);
-        this.consecuente = consecuente.trim();
-        this.numero = numero;
+        this.consecuente  = consecuente.trim();
+        this.numero       = numero;
     }
 
-    public List<Condicion> getAntecedentes() {
-        return antecedentes;
+    public Regla(List<Condicion> antecedentes, String consecuente) {
+        this(antecedentes, consecuente, 0);
     }
 
-    public String getConsecuente() {
-        return consecuente;
-    }
-
-    public int getNumero() {
-        return numero;
-    }
+    public List<Condicion> getAntecedentes() { return antecedentes; }
+    public String getConsecuente()           { return consecuente;  }
+    public int getNumero()                   { return numero;       }
 
     @Override
     public String toString() {
+        if (antecedentes.isEmpty()) {
+            return "(sin antecedentes) -> " + consecuente;
+        }
         StringJoiner sj = new StringJoiner(" & ");
         for (Condicion c : antecedentes) {
             sj.add(c.toString());

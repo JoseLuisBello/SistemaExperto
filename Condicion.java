@@ -7,16 +7,11 @@ class Condicion {
         this.hecho = hecho.trim();
     }
 
-    public boolean esNegada() {
-        return negada;
-    }
-
-    public String getHecho() {
-        return hecho;
-    }
+    public boolean esNegada() { return negada; }
+    public String getHecho()  { return hecho; }
 
     @Override
     public String toString() {
-        return (negada ? "NO " : "") + hecho;
+        return (negada ? "!" : "") + hecho;
     }
 }

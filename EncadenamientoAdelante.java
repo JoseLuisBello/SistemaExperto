@@ -17,7 +17,7 @@ class EncadenamientoAdelante {
         do {
             cambio = false;
             iteracion++;
-            out.printf("Iteracion %d ------------------------------------\n", iteracion);
+            out.printf("Iteración %d ------------------------------------\n", iteracion);
 
             List<Regla> reglasCopia = bc.obtenerReglas();
             for (Regla regla : reglasCopia) {
@@ -36,7 +36,7 @@ class EncadenamientoAdelante {
 
                 if (puedeDispararse && !bc.contieneHecho(regla.getConsecuente())) {
                     bc.agregarHecho(regla.getConsecuente());
-                    out.println(" Inferido: " + regla.getConsecuente());
+                    out.println("  Inferido: " + regla.getConsecuente());
                     cambio = true;
                 }
             }

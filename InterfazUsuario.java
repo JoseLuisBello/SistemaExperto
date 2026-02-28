@@ -18,7 +18,7 @@ class InterfazUsuario {
     }
 
     public void mostrarHechos(List<String> hechos) {
-        System.out.println("\nHechos actualizados:");
+        System.out.println("\nHechos actuales:");
         if (hechos.isEmpty()) {
             System.out.println("  (ninguno)");
         } else {
