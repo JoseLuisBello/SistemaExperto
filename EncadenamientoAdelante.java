@@ -21,14 +21,13 @@ class EncadenamientoAdelante {
 
             List<Regla> reglasCopia = bc.obtenerReglas();
             for (Regla regla : reglasCopia) {
-                out.println("Evaluando: " + regla);
+                out.println("Evaluando " + regla.toStringConNumero());
 
                 boolean puedeDispararse = true;
                 for (Condicion cond : regla.getAntecedentes()) {
                     boolean cumple = cond.esNegada()
                             ? !bc.contieneHecho(cond.getHecho())
                             : bc.contieneHecho(cond.getHecho());
-
                     if (!cumple) {
                         puedeDispararse = false;
                         break;
@@ -37,7 +36,7 @@ class EncadenamientoAdelante {
 
                 if (puedeDispararse && !bc.contieneHecho(regla.getConsecuente())) {
                     bc.agregarHecho(regla.getConsecuente());
-                    out.println("  Inferido: " + regla.getConsecuente());
+                    out.println(" Inferido: " + regla.getConsecuente());
                     cambio = true;
                 }
             }

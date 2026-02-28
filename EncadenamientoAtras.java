@@ -14,12 +14,12 @@ class EncadenamientoAtras {
         objetivo = objetivo.trim();
 
         if (bc.contieneHecho(objetivo)) {
-            out.println(objetivo + "  Hecho ya conocido");
+            out.println(objetivo + ", ya esta en los hechos");
             return true;
         }
 
         if (pila.contains(objetivo)) {
-            out.println("  (REGRESION) Ciclo detectado (SE) asumimos falso: " + objetivo);
+            out.println(" (REGRESION) Ciclo detectado (SE) asumimos falso: " + objetivo);
             return false;
         }
 
@@ -30,9 +30,10 @@ class EncadenamientoAtras {
         List<Regla> reglasCopia = bc.obtenerReglas();
 
         for (Regla regla : reglasCopia) {
-            if (!regla.getConsecuente().equals(objetivo)) continue;
+            if (!regla.getConsecuente().equals(objetivo))
+                continue;
 
-            out.println("  Probamos regla: " + regla);
+            out.println(" Probamos " + regla.toStringConNumero());
 
             boolean todosCumplen = true;
             for (Condicion cond : regla.getAntecedentes()) {
@@ -53,8 +54,8 @@ class EncadenamientoAtras {
 
             if (todosCumplen) {
                 bc.agregarHecho(objetivo);
-                out.println("  Disparamos la regla:\n\t" + regla);
-                out.println("  y agregamos: " + objetivo + " a los hechos");
+                out.println(" Disparamos la regla:\n\t" + regla.toStringConNumero());
+                out.println(" y agregamos: " + objetivo + " a los hechos");
                 probado = true;
                 break;
             }

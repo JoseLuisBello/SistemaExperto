@@ -3,10 +3,12 @@ import java.util.*;
 class Regla {
     private final List<Condicion> antecedentes;
     private final String consecuente;
+    private final int numero;
 
-    public Regla(List<Condicion> antecedentes, String consecuente) {
+    public Regla(List<Condicion> antecedentes, String consecuente, int numero) {
         this.antecedentes = new ArrayList<>(antecedentes);
         this.consecuente = consecuente.trim();
+        this.numero = numero;
     }
 
     public List<Condicion> getAntecedentes() {
@@ -17,12 +19,23 @@ class Regla {
         return consecuente;
     }
 
+    public int getNumero() {
+        return numero;
+    }
+
     @Override
     public String toString() {
-        StringJoiner sj = new StringJoiner(" Y ");
+        StringJoiner sj = new StringJoiner(" & ");
         for (Condicion c : antecedentes) {
             sj.add(c.toString());
         }
-        return sj.toString() + " ENTONCES " + consecuente;
+        return sj.toString() + " -> " + consecuente;
+    }
+
+    public String toStringConNumero() {
+        if (numero > 0) {
+            return "R" + numero + ": " + toString();
+        }
+        return toString();
     }
 }

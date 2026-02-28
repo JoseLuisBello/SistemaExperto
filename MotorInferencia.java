@@ -22,6 +22,8 @@ public class MotorInferencia {
             return;
         }
 
+        bc.imprimirEstadoInicial();
+
         System.out.println("\nOpciones:");
         System.out.println("  1 = Encadenamiento hacia adelante");
         System.out.println("  2 = Encadenamiento hacia atras");
@@ -48,15 +50,31 @@ public class MotorInferencia {
         ui.mostrarHechos(bc.obtenerTodosHechos());
 
         if (ui.preguntarSiNo("¿Guardar los hechos actualizados?")) {
-            String destino = archivoHechos.isEmpty() ? "hechos_actualizados.txt" : archivoHechos;
-            destino = ui.preguntar("Ruta para guardar [" + destino + "]: ");
-            if (destino.isEmpty()) destino = archivoHechos.isEmpty() ? "hechos_actualizados.txt" : archivoHechos;
+            String nombreDefecto = "hechos_actualizados.txt";
+
+            System.out.println("Se guardará en la carpeta 'Generados'");
+            String nombre = ui.preguntar(
+                    "Ingrese el nombre del archivo (Enter = " + nombreDefecto + "): ");
+
+            if (nombre.trim().isEmpty()) {
+                nombre = nombreDefecto;
+            }
+
+            if (!nombre.toLowerCase().endsWith(".txt")) {
+                nombre += ".txt";
+            }
+
+            String ruta = "Generados/" + nombre;
 
             try {
-                bc.guardarHechos(destino);
-                System.out.println("Guardado en: " + destino);
+                java.nio.file.Files.createDirectories(java.nio.file.Paths.get("Generados"));
+
+                bc.guardarHechos(ruta);
+                System.out.println("Archivo guardado en: Generados/" + nombre);
             } catch (IOException e) {
-                System.out.println("Error al guardar: " + e.getMessage());
+                System.out.println("No se pudo guardar el archivo:");
+                System.out.println("  → " + e.getMessage());
+                System.out.println("  Ruta intentada: " + ruta);
             }
         }
 

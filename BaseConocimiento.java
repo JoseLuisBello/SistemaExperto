@@ -44,13 +44,14 @@ class BaseConocimiento {
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
             int numLinea = 0;
+            int numeroRegla = 0;
+
             while ((linea = br.readLine()) != null) {
                 numLinea++;
                 linea = linea.trim();
                 if (linea.isEmpty() || linea.startsWith("#") || linea.startsWith("//"))
                     continue;
 
-                // Aceptamos => ENTONCES ->
                 String[] partes = linea.split("=>|ENTONCES|->", 2);
                 if (partes.length != 2) {
                     System.out.println("Línea ignorada (formato inválido) #" + numLinea + ": " + linea);
@@ -60,12 +61,16 @@ class BaseConocimiento {
                 String textoAntecedentes = partes[0].trim();
                 String consecuente = partes[1].trim();
 
-                List<Condicion> antecedentes = parsearAntecedentes(textoAntecedentes + "->" + consecuente);
-                if (!antecedentes.isEmpty() || consecuente.isEmpty()) {
-                    agregarRegla(new Regla(antecedentes, consecuente));
-                } else {
+                List<Condicion> antecedentes = parsearAntecedentes(textoAntecedentes);
+
+                if (antecedentes.isEmpty() && consecuente.isEmpty()) {
                     System.out.println("Regla vacía ignorada en línea #" + numLinea);
+                    continue;
                 }
+
+                numeroRegla++;
+                Regla nuevaRegla = new Regla(antecedentes, consecuente, numeroRegla);
+                agregarRegla(nuevaRegla);
             }
         }
     }
@@ -73,16 +78,9 @@ class BaseConocimiento {
     private List<Condicion> parsearAntecedentes(String texto) {
         List<Condicion> lista = new ArrayList<>();
 
-        texto = texto.replaceAll("\\s*->\\s*", "->");
-        texto = texto.replaceAll("\\s*&\\s*", "&");
+        texto = texto.replaceAll("\\s*&\\s*", " & ");
 
-        String[] partes = texto.split("->", 2);
-        if (partes.length != 2) {
-            return lista;
-        }
-
-        String ante = partes[0].trim();
-        String[] tokens = ante.split("&");
+        String[] tokens = texto.split("\\s*&\\s*");
         for (String token : tokens) {
             token = token.trim();
             if (token.isEmpty())
@@ -92,8 +90,7 @@ class BaseConocimiento {
             if (token.startsWith("!")) {
                 negada = true;
                 token = token.substring(1).trim();
-            }
-            else if (token.startsWith("~")) {
+            } else if (token.startsWith("~")) {
                 negada = true;
                 token = token.substring(1).trim();
             }
@@ -102,7 +99,6 @@ class BaseConocimiento {
                 lista.add(new Condicion(negada, token));
             }
         }
-
         return lista;
     }
 
@@ -113,5 +109,18 @@ class BaseConocimiento {
                 bw.newLine();
             }
         }
+    }
+
+    public void imprimirEstadoInicial() {
+        System.out.println("\nHechos (" + hechos.size() + "):");
+        for (String h : hechos) {
+            System.out.println("  " + h);
+        }
+
+        System.out.println("\nReglas (" + reglas.size() + "):");
+        for (Regla r : reglas) {
+            System.out.println("  " + r.toStringConNumero());
+        }
+        System.out.println();
     }
 }
