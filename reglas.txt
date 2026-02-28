@@ -1,0 +1,4 @@
+SI usuario_hizo_clic_en_link_sospechoso ENTONCES posible_phishing
+SI posible_phishing Y pagina_pide_credenciales ENTONCES robo_cuenta_confirmado
+SI robo_cuenta_confirmado ENTONCES cambiar_contrasenas
+SI sistema_lento Y ventanas_emergentes ENTONCES presencia_malware
